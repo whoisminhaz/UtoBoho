@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Order — Utoo Boho Café & Patisserie</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<!--
+PHOTO GUIDE — create a folder called "order" inside your "assets" folder.
+Save each food photo with EXACTLY these filenames:
+assets/order/golden-mango.jpg          assets/order/tropical-rainbowl.jpg
+assets/order/berry-blossom.jpg         assets/order/nutty-banana.jpg
+assets/order/big-breakfast.jpg         assets/order/boho-pancake.jpg
+assets/order/salmon-bene.jpg           assets/order/florentine.jpg
+assets/order/avochic.jpg               assets/order/beef-mush-sand.jpg
+assets/order/avo-omelette.jpg          assets/order/beef-quiche.jpg
+assets/order/duck-quiche.jpg           assets/order/salmon-quiche.jpg
+assets/order/ham-quiche.jpg            assets/order/caesar-salad.jpg
+assets/order/salmon-steak.jpg          assets/order/farmer-john.jpg
+assets/order/avo-falafel.jpg           assets/order/fish-chips.jpg
+assets/order/truffle-risotto.jpg       assets/order/shakshuka.jpg
+assets/order/falafel-wrap.jpg          assets/order/karaage-wrap.jpg
+assets/order/triple-egg-wrap.jpg       assets/order/pot-pie.jpg
+assets/order/truffle-carbo.jpg         assets/order/beef-aglio.jpg
+assets/order/fungi-pomo.jpg            assets/order/salmon-greencurry.jpg
+assets/order/tomyum-pasta.jpg          assets/order/kp-aglio.jpg
+assets/order/creme-mush.jpg            assets/order/mashed-potato.jpg
+assets/order/calamari.jpg              assets/order/karaage-bskt.jpg
+assets/order/truffle-fries.jpg         assets/order/tater-tots.jpg
+assets/order/surf-turf.jpg             assets/order/buffalo.jpg
+assets/order/ivory-oasis.jpg           assets/order/blushing-straw.jpg
+assets/order/lady-in-red.jpg           assets/order/choco-royale.jpg
+assets/order/jasmine-c.jpg             assets/order/pink-sapphire.jpg
+assets/order/man-gold.jpg              assets/order/emerald-g.jpg
+assets/order/hoji-grey-c.jpg           assets/order/yuri-matcha-c.jpg
+assets/order/rose-grace.jpg            assets/order/matcha-misu-c.jpg
+assets/order/pinku-mint.jpg            assets/order/earl-grey-c.jpg
+assets/order/basque-orig.jpg           assets/order/basque-cemp.jpg
+assets/order/basque-dur.jpg            assets/order/panna-cotta.jpg
+assets/order/canele.jpg                assets/order/matcha-latte.jpg
+assets/order/dirty-matcha.jpg          assets/order/pitaya.jpg
+assets/order/mango-tango.jpg           assets/order/berries.jpg
+assets/order/pink-lychee.jpg           assets/order/straw-tea.jpg
+assets/order/sunset-blvd.jpg
+-->
+<style>
+:root{
+  --cream:#faf7f2;--warm:#f5efe4;--terra:#b5602a;--terra2:#d4845a;
+  --brown:#4a2e1a;--dark:#2c1a0e;--muted:#8a7060;--border:#ddd0bb;
+  --green:#15803d;--hdr:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--dark);}
+
+/* HEADER */
+.hdr{background:var(--brown);color:#faf7f2;padding:11px 18px 9px;text-align:center;
+  position:sticky;top:0;z-index:300;box-shadow:0 2px 20px rgba(44,26,14,.35);height:var(--hdr);}
+.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;letter-spacing:.05em;opacity:.92;}
+.tpill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:3px 12px;
+  font-size:12px;color:#f9c784;font-weight:500;margin-top:4px;cursor:pointer;transition:.2s;}
+.tpill:hover{background:rgba(255,255,255,.22);}
+
+/* CUSTOMER BAR */
+.cbar{background:#fff;border-bottom:1px solid var(--border);padding:10px 16px;}
+.cbar label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:5px;}
+.cbar input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);background:var(--cream);outline:none;transition:.2s;}
+.cbar input:focus{border-color:var(--terra);}
+.cbar input::placeholder{color:var(--muted);opacity:.65;}
+
+/* TABS */
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);overflow-x:auto;
+  scrollbar-width:none;position:sticky;top:var(--hdr);z-index:200;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;padding:11px 13px;border:none;background:transparent;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--muted);
+  cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.2s;}
+.tab.on{color:var(--terra);border-bottom-color:var(--terra);}
+.tcnt{background:var(--terra);color:#fff;border-radius:10px;padding:1px 5px;font-size:10px;margin-left:3px;display:none;}
+.tab.has .tcnt{display:inline;}
+
+/* SUBCAT HEADER */
+.sch{padding:18px 16px 8px;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;
+  color:var(--brown);display:flex;align-items:center;gap:10px;}
+.sch::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ITEM CARD */
+.icard{display:flex;align-items:center;gap:12px;background:#fff;
+  border-top:1px solid var(--border);padding:12px 16px;transition:.15s;}
+.icard.on{background:#fffaf5;}
+.ithumb{width:68px;height:68px;border-radius:9px;object-fit:cover;flex-shrink:0;background:var(--warm);}
+.iemoji{width:68px;height:68px;border-radius:9px;flex-shrink:0;
+  background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.ibody{flex:1;min-width:0;}
+.badges{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:3px;}
+.badge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:500;}
+.bs{background:#fee2e2;color:#b91c1c;}.vg{background:#dcfce7;color:var(--green);}
+.nw{background:#fef3c7;color:#b45309;}.sh{background:#ede9fe;color:#7c3aed;}.ot{background:#f3f4f6;color:#4b5563;}
+.iname{font-family:'Cormorant Garamond',serif;font-size:15.5px;font-weight:600;color:var(--dark);line-height:1.2;}
+.idesc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.45;}
+.ifoot{display:flex;align-items:center;justify-content:space-between;margin-top:5px;}
+.iprice{font-size:13px;font-weight:500;color:var(--terra);}
+.ical{font-size:10px;color:var(--muted);margin-left:4px;}
+.qc{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.qbtn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);background:#fff;
+  color:var(--brown);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.qbtn.p{background:var(--terra);border-color:var(--terra);color:#fff;}
+.qbtn.p:hover{background:var(--brown);border-color:var(--brown);}
+.qbtn.m:hover{border-color:var(--terra);color:var(--terra);}
+.qnum{min-width:17px;text-align:center;font-size:14px;font-weight:500;}
+
+/* NOTES */
+.nbox{padding:14px 16px 6px;}
+.nbox label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:5px;}
+.nbox textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;
+  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--dark);background:#fff;
+  outline:none;resize:vertical;min-height:65px;transition:.2s;}
+.nbox textarea:focus{border-color:var(--terra);}
+
+/* ORDER FOOTER */
+.obar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);
+  padding:10px 16px 18px;box-shadow:0 -4px 24px rgba(44,26,14,.1);z-index:200;}
+.orow{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.olabel{font-size:12px;color:var(--muted);}
+.oamt{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;}
+.orm{font-size:12px;font-weight:400;color:var(--muted);margin-right:2px;}
+.sbtn{width:100%;padding:13px;border:none;border-radius:10px;background:var(--terra);color:#fff;
+  font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;cursor:pointer;transition:.2s;}
+.sbtn:hover:not(:disabled){background:var(--brown);}
+.sbtn:disabled{background:var(--muted);opacity:.6;cursor:default;}
+
+/* MODALS */
+.ov{position:fixed;inset:0;background:rgba(44,26,14,.72);z-index:500;
+  display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.ov.hide{display:none;}
+.mc{background:#fff;border-radius:20px;padding:26px 20px;max-width:380px;width:100%;
+  max-height:88vh;overflow-y:auto;}
+.mtitle{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;
+  color:var(--dark);margin-bottom:4px;text-align:center;}
+.msub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:18px;}
+/* Table grid */
+.tgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;}
+.tbtn{padding:9px 4px;border:1.5px solid var(--border);border-radius:8px;background:var(--cream);
+  font-size:13px;font-weight:500;color:var(--brown);cursor:pointer;transition:.15s;}
+.tbtn:hover{border-color:var(--terra);color:var(--terra);background:#fff8f3;}
+.twbtn{width:100%;padding:11px;border:1.5px solid var(--border);border-radius:8px;
+  background:var(--warm);font-size:14px;color:var(--brown);cursor:pointer;transition:.15s;}
+.twbtn:hover{border-color:var(--terra);}
+/* Receipt */
+.rinfo{background:var(--warm);border-radius:10px;padding:12px 14px;margin-bottom:14px;}
+.rrow{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;}
+.rrow:last-child{margin:0;}.rlbl{color:var(--muted);}.rval{font-weight:500;}
+.roid{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--terra);}
+.ritem{display:flex;justify-content:space-between;align-items:flex-start;
+  padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.ritem:last-child{border:none;}
+.riname{flex:1;color:var(--dark);}.riqty{color:var(--muted);margin-right:6px;}
+.riprice{font-weight:500;color:var(--terra);white-space:nowrap;}
+.rtotal{display:flex;justify-content:space-between;padding-top:10px;border-top:2px solid var(--border);}
+.rtlbl,.rtamt{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;}
+.rtamt{color:var(--terra);}
+.rnbtn{width:100%;margin-top:14px;padding:11px;border:2px solid var(--terra);border-radius:10px;
+  background:transparent;color:var(--terra);font-family:'Cormorant Garamond',serif;font-size:16px;cursor:pointer;transition:.2s;}
+.rnbtn:hover{background:var(--terra);color:#fff;}
+/* Spinner */
+.spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);
+  border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:5px;}
+@keyframes sp{to{transform:rotate(360deg)}}
+main{padding-bottom:115px;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo">✦ Utoo Boho Café & Patisserie ✦</div>
+  <div class="tpill" id="tpill" onclick="openTM()">
+    🪑 <span id="tdsp">Select Table</span> <span style="opacity:.5;font-size:10px;margin-left:2px;">▼</span>
+  </div>
+</header>
+
+<div class="cbar">
+  <label for="cname">Your Name</label>
+  <input type="text" id="cname" placeholder="Enter your name — we'll call you when ready ✦" autocomplete="given-name"/>
+</div>
+
+<nav class="tabs" id="tabs"></nav>
+<main id="menuMain"></main>
+
+<!-- TABLE MODAL -->
+<div class="ov hide" id="tm">
+  <div class="mc">
+    <div style="font-size:32px;text-align:center;margin-bottom:10px;">🪑</div>
+    <div class="mtitle">Select Your Table</div>
+    <div class="msub">Tap your table number, or choose takeaway</div>
+    <div class="tgrid" id="tgrid"></div>
+    <button class="twbtn" onclick="pickT('Takeaway')">🛍️ Takeaway / No Table</button>
+  </div>
+</div>
+
+<!-- RECEIPT MODAL -->
+<div class="ov hide" id="rm">
+  <div class="mc" id="rc"></div>
+</div>
+
+<!-- ORDER FOOTER -->
+<div class="obar">
+  <div class="orow">
+    <span class="olabel">Total · <span id="cntLbl">0 items</span></span>
+    <span class="oamt"><span class="orm">RM </span><span id="totDisp">0.00</span></span>
+  </div>
+  <button class="sbtn" id="sbtn" disabled onclick="submit()">Add items to order</button>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// ① PASTE YOUR APPS SCRIPT URL HERE
+// ════════════════════════════════════════
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyi2FH8Ry9m3g8IgIXWDOOlrFDFoXIuXK19oZw0YznJBipVDiEzm9KqoWsqZMQrgB4w/exec";
+
+// ════════════════════════════════════════
+// ② CHANGE THIS TO YOUR TOTAL TABLE COUNT
+// ════════════════════════════════════════
+var TOTAL_TABLES = 20;
+
+// ════════════════════════════════════════
+// FULL MENU — Edit prices, names, descriptions here
+// To add a new item: copy any item block {}
+//   give it a unique id, update name/price/desc
+// ════════════════════════════════════════
+var MENU = [
+
+{id:"breakfast",label:"Breakfast",icon:"🌅",subcats:[
+  {name:"Yogurt Bowl — Low Fat",items:[
+    {id:"gm",name:"Golden Mango",price:22,e:"🥭",cal:"613",
+     desc:"Refreshing yogurt bowl with mango, blueberries, walnuts, seeds, maple syrup & coconut",
+     b:["High Fiber"],img:"assets/order/golden-mango.jpg"},
+    {id:"trb",name:"Tropical Rainbowl",price:22,e:"🌈",cal:"551",
+     desc:"Vibrant yogurt mix of mango, pitaya & passion fruit with crunchy seeds, pomegranate, maple syrup & coconut",
+     b:["Best Seller","Rich in Antioxidants"],img:"assets/order/tropical-rainbowl.jpg"},
+    {id:"bb",name:"Berry Blossom",price:22,e:"🍓",cal:"365",
+     desc:"Creamy yogurt with strawberry purée, fresh berries, pistachios, pomegranate, chia seeds & edible flower",
+     b:["Best Seller","High Protein"],img:"assets/order/berry-blossom.jpg"},
+    {id:"nb",name:"Nutty Banana",price:22,e:"🍌",cal:"814",
+     desc:"Creamy mix of yogurt, honey granola, banana, pecans, walnuts, seeds, blueberries & peanut butter",
+     b:["High Protein","High Fiber"],img:"assets/order/nutty-banana.jpg"},
+  ]},
+  {name:"All-Day Breakfast",items:[
+    {id:"bigb",name:"All-Day B.I.G Breakfast",price:39,e:"🍳",
+     desc:"Baked beans, crispy tater tots, flaky croissant, garlic butter mushrooms, eggs your way, grilled tomato, chicken ham & sausage. FREE fresh orange juice (8oz). Add egg preference in notes.",
+     b:["Best Seller"],img:"assets/order/big-breakfast.jpg"},
+    {id:"bohop",name:"Boho-Chic Pancake",price:24,e:"🥞",
+     desc:"Fluffy pancake stack with raspberry sauce, strawberry, blueberry, cookie crumbs, passion fruit, maple syrup, edible flowers & Madagascar vanilla ice cream (15g). Extra ice cream +RM6.",
+     b:["Best Seller"],img:"assets/order/boho-pancake.jpg"},
+  ]},
+  {name:"English Muffin",items:[
+    {id:"salb",name:"Salmon Egg Benedict",price:28,e:"🐟",
+     desc:"Smoked salmon, poached egg, hollandaise sauce, guacamole, micro greens & English muffin. Upgrade to sourdough +RM3.",
+     b:["Best Seller"],img:"assets/order/salmon-bene.jpg"},
+    {id:"flor",name:"Florentine Scramble",price:22,e:"🥬",
+     desc:"Scrambled eggs, baby spinach, garlic, olive oil, alfalfa sprouts, edible flowers & English muffin with tomato. Upgrade to sourdough +RM3.",
+     img:"assets/order/florentine.jpg"},
+  ]},
+  {name:"Sourdough Open Sandwich",items:[
+    {id:"avoc",name:"Avochic Poached Egg",price:28,e:"🥑",
+     desc:"Chicken ham, poached eggs, avocado, olive oil, parsley, pepper, sourdough bread & greens",
+     img:"assets/order/avochic.jpg"},
+    {id:"bms",name:"Beef & Mushroom Poached Egg",price:26,e:"🍄",
+     desc:"Beef bacon, assorted mushroom, poached egg, onion, olive oil, parsley, pepper, sourdough bread & greens",
+     b:["Best Seller"],img:"assets/order/beef-mush-sand.jpg"},
+    {id:"amo",name:"Avocado Mint Omelette",price:24,e:"🌿",
+     desc:"Avocado omelette, peanut butter, mint leaves, kyuri cucumber, olive oil, yogurt, sourdough bread & side greens",
+     b:["Best Seller"],img:"assets/order/avo-omelette.jpg"},
+  ]},
+  {name:"Fresh Baked Quiche — 15 min prep",items:[
+    {id:"bq",name:"Black Peppered Beef Bacon Quiche",price:20,e:"🥧",
+     desc:"Beef bacon, mushroom, capsicum, carrot, egg, black pepper, olive oil, herbs & Japanese pumpkin",
+     b:["15min Prep"],img:"assets/order/beef-quiche.jpg"},
+    {id:"dq",name:"Mushroom Smoked Duck Quiche",price:20,e:"🦆",
+     desc:"Mushroom, smoked duck, egg, capsicum, cheddar cheese, olive oil, herbs & Japanese pumpkin",
+     b:["15min Prep"],img:"assets/order/duck-quiche.jpg"},
+    {id:"sq",name:"Norwegian Salmon Quiche",price:23,e:"🐠",
+     desc:"Norwegian salmon, cauliflower, potato, capsicum, egg, olive oil, herbs & Japanese pumpkin",
+     b:["15min Prep"],img:"assets/order/salmon-quiche.jpg"},
+    {id:"hq",name:"Ham & Swiss Quiche",price:20,e:"🍖",
+     desc:"Chicken ham, mushroom, egg, Parmesan cheese, cherry tomato, olive oil, herbs & Japanese pumpkin",
+     b:["15min Prep"],img:"assets/order/ham-quiche.jpg"},
+  ]},
+]},
+
+{id:"mains",label:"Mains",icon:"🍽️",subcats:[
+  {name:"Utoo Signature",items:[
+    {id:"cs",name:"Imperial Caesar Salad",price:19,e:"🥗",
+     desc:"Grilled chicken breast, baby romaine lettuce, cherry tomatoes, egg, croutons, gherkin cucumber, capers, red radish, onion, olive oil, salad dressing & Parmesan cheese. Vegan option — add note.",
+     img:"assets/order/caesar-salad.jpg"},
+  ]},
+  {name:"Signature Mains",items:[
+    {id:"ssg",name:"Salmon Steak Guacamole",price:39,e:"🐟",
+     desc:"Grilled salmon fillet with guacamole, cherry tomato & lemon",
+     img:"assets/order/salmon-steak.jpg"},
+    {id:"fj",name:"Signature Farmer John",price:30,e:"🍗",
+     desc:"Herbs-grilled whole drumstick, raspberry, mashed potato & housemade sauce",
+     b:["Best Seller"],img:"assets/order/farmer-john.jpg"},
+    {id:"af",name:"Avocado Falafel",price:26,e:"🧆",
+     desc:"Beet hummus, falafel, Hass avocado, sumac & salad with Utoo signature dressing",
+     b:["Vegan"],img:"assets/order/avo-falafel.jpg"},
+    {id:"fc",name:"Fisherman's Fish & Chips",price:29,e:"🐠",
+     desc:"London-style fish & chips with barramundi, fries, mushy peas, lemon & tartar sauce",
+     b:["Best Seller"],img:"assets/order/fish-chips.jpg"},
+    {id:"tr",name:"Risotto Black Truffle w Wild Mushroom",price:33,e:"🌾",
+     desc:"Italian arborio rice cooked with giuliano tartufi, creamy wild mushroom & Parmesan cheese",
+     b:["Best Seller"],img:"assets/order/truffle-risotto.jpg"},
+    {id:"shk",name:"Pomodoro Shakshuka w Sourdough",price:28,e:"🍅",
+     desc:"Pomodoro sauce, kampung egg, shitake & assorted mushrooms, garlic, Parmesan cheese, olive oil, pepper, herbs & yellow onion",
+     b:["Best Seller"],img:"assets/order/shakshuka.jpg"},
+  ]},
+  {name:"Wraps",items:[
+    {id:"lfw",name:"Lebanese Falafel Wrap",price:24,e:"🌯",
+     desc:"Crispy falafel, creamy hummus, ripe avocado & fresh veggies in a warm tortilla, topped with crispy papadum & spicy tomato dip",
+     b:["Vegan","Best Seller"],img:"assets/order/falafel-wrap.jpg"},
+    {id:"kkw",name:"Chicken Karaage Wrap",price:26,e:"🍗",
+     desc:"Crispy karaage chicken, fresh veggies, tangy tartar sauce in a warm burrito, served with crispy fries & spicy chili sauce",
+     b:["Best Seller"],img:"assets/order/karaage-wrap.jpg"},
+    {id:"tew",name:"Triple Egg Booster Wrap",price:21,e:"🥚",
+     desc:"2 omelettes, hard-boiled egg, fresh veggies & zesty sauces, served with a refreshing Caesar salad",
+     img:"assets/order/triple-egg-wrap.jpg"},
+  ]},
+  {name:"Bohemian Stew Pot Pie — Dine-in Only, 15 min prep",items:[
+    {id:"pp1",name:"Pot Pie — Truffle Mushroom",price:25,e:"🥧",
+     desc:"Wild mushrooms, potato, onion, Utoo signature brown sauce with herbs, truffle oil, Parmesan cheese & crispy puff pastry with black sesame garnish. 100% Vegan.",
+     b:["Vegan","Dine-in Only"],img:"assets/order/pot-pie.jpg"},
+    {id:"pp2",name:"Pot Pie — Smoked Duck",price:25,e:"🦆",
+     desc:"Smoked duck, wild mushrooms, potato, onion, Utoo signature brown sauce, truffle oil & crispy puff pastry with black sesame garnish",
+     b:["Best Seller","Dine-in Only"],img:"assets/order/pot-pie.jpg"},
+    {id:"pp3",name:"Pot Pie — Classic Chicken",price:25,e:"🍗",
+     desc:"Classic chicken, wild mushrooms, potato, onion, Utoo signature brown sauce & crispy puff pastry with black sesame garnish",
+     b:["Dine-in Only"],img:"assets/order/pot-pie.jpg"},
+  ]},
+]},
+
+{id:"pasta",label:"Pasta",icon:"🍝",subcats:[
+  {name:"Pasta",items:[
+    {id:"tdc",name:"Truffle Smoked Duck Carbonara",price:30,e:"🦆",
+     desc:"Smoked duck, egg yolk, truffle oil, Parmesan cheese, olive oil & herbs",
+     b:["Best Seller"],img:"assets/order/truffle-carbo.jpg"},
+    {id:"baa",name:"Spicy Beef Bacon Aglio Olio",price:26,e:"🌶️",
+     desc:"Beef brisket, smoked cherry tomatoes, shitake, button, king trumpet & hashimeiji mushrooms, olive oil & chilli flakes",
+     img:"assets/order/beef-aglio.jpg"},
+    {id:"fpo",name:"Fungi Pomodoro",price:25,e:"🍄",
+     desc:"Peeled tomato pomodoro with assorted mushrooms, garlic, basil, Parmesan cheese & olive oil. Vegan option available.",
+     b:["Vegan"],img:"assets/order/fungi-pomo.jpg"},
+    {id:"sgc",name:"Smoked Salmon Green Curry Pasta",price:35,e:"🐟",
+     desc:"Smoked salmon, king prawn, cherry tomato & green curry gravy",
+     img:"assets/order/salmon-greencurry.jpg"},
+    {id:"tkf",name:"Tomyum Kung-Full Pasta",price:34,e:"🦐",
+     desc:"King prawn, authentic Tom Yum, homemade chili paste, lemongrass, garlic, red chili padi, kaffir leaves, cherry tomato, milk & Thai spices",
+     b:["Best Seller"],img:"assets/order/tomyum-pasta.jpg"},
+    {id:"kpa",name:"King Prawn Aglio Olio",price:32,e:"🦐",
+     desc:"King prawns, garlic, chilli flakes, olive oil & herbs",
+     b:["Best Seller"],img:"assets/order/kp-aglio.jpg"},
+  ]},
+]},
+
+{id:"snacks",label:"Snacks",icon:"🍟",subcats:[
+  {name:"Snacks & Bites",items:[
+    {id:"cdm",name:"Crème de Mushroom w Truffle Oil",price:16,e:"🍄",
+     desc:"Creamy wild mushroom soup with truffle oil, served with 2 pcs garlic baguette. Add extra garlic toast +RM3.",
+     b:["Best Seller"],img:"assets/order/creme-mush.jpg"},
+    {id:"mp",name:"US Russet Mashed Potato",price:12,e:"🥔",
+     desc:"Smooth & buttery mashed potato with signature brown gravy",
+     img:"assets/order/mashed-potato.jpg"},
+    {id:"cr",name:"Calamari Rings (8 pcs)",price:19,e:"🦑",
+     desc:"Crispy golden calamari rings with dipping sauce",
+     img:"assets/order/calamari.jpg"},
+    {id:"kb",name:"Karaage Basket",price:25,e:"🍗",
+     desc:"Crispy Japanese-style karaage chicken basket",
+     img:"assets/order/karaage-bskt.jpg"},
+    {id:"tf",name:"Truffle Fries (300g)",price:19,e:"🍟",
+     desc:"Golden fries tossed in truffle oil & fresh herbs",
+     img:"assets/order/truffle-fries.jpg"},
+    {id:"tt",name:"Tater Tots (300g)",price:19,e:"🟡",
+     desc:"Crispy golden tater tots, perfectly seasoned",
+     img:"assets/order/tater-tots.jpg"},
+  ]},
+  {name:"Sharing Platters",items:[
+    {id:"snt",name:"Surf N' Turf Signature Big Platter",price:48,e:"🎉",
+     desc:"Straight-cut fries, 6pcs calamari rings, 6pcs buffalo drumettes, housemade pomegranate cheese sauce & spicy tomato sauce. For 2–3 pax.",
+     b:["Sharing"],img:"assets/order/surf-turf.jpg"},
+    {id:"bd6",name:"Spicy Buffalo Drumettes (6 pcs)",price:29,e:"🍗",
+     desc:"Crispy spicy buffalo chicken drumettes with 2 salsa dips & spicy tomato sauce",
+     b:["Best Seller"],img:"assets/order/buffalo.jpg"},
+    {id:"bd12",name:"Spicy Buffalo Drumettes (12 pcs)",price:52,e:"🍗",
+     desc:"Crispy spicy buffalo chicken drumettes with 2 salsa dips & spicy tomato sauce",
+     img:"assets/order/buffalo.jpg"},
+  ]},
+]},
+
+{id:"patisserie",label:"Patisserie",icon:"🎂",subcats:[
+  {name:"Signature Petite Cakes — 2 inch",items:[
+    {id:"io",name:"Ivory Oasis",price:27,e:"💚",
+     desc:"Valrhona Opalys white chocolate lemon mousse, citrus nappage, pistachio ganache & almond sabre",
+     b:["Best Seller"],img:"assets/order/ivory-oasis.jpg"},
+    {id:"bstr",name:"Blushing Strawberry",price:25,e:"🌸",
+     desc:"Strawberry, elderflower & lime",
+     img:"assets/order/blushing-straw.jpg"},
+    {id:"lir",name:"Lady In Red",price:27,e:"❤️",
+     desc:"Valrhona Opalys white chocolate, passion fruit, raspberry & hazelnut",
+     b:["Best Seller"],img:"assets/order/lady-in-red.jpg"},
+    {id:"chr",name:"Chocolate Royale",price:24,e:"🍫",
+     desc:"Valrhona luxury dark chocolate, premium raisins & almond",
+     img:"assets/order/choco-royale.jpg"},
+    {id:"jasc",name:"Jasmine",price:28,e:"🌸",
+     desc:"White chocolate jasmine mousse, lychee compote & strawberry purée",
+     img:"assets/order/jasmine-c.jpg"},
+    {id:"pks",name:"Pink Sapphire",price:26,e:"💗",
+     desc:"Nutmeg, pear, white chocolate ganache, cinnamon, ground pecan & almond",
+     img:"assets/order/pink-sapphire.jpg"},
+    {id:"mg",name:"Man-Gold",price:26,e:"🥭",
+     desc:"Mango, lychee lime & white chocolate",
+     b:["New"],img:"assets/order/man-gold.jpg"},
+    {id:"eg",name:"Emerald Ganache",price:25,e:"💚",
+     desc:"Ground pistachio, white chocolate & raspberry",
+     b:["New"],img:"assets/order/emerald-g.jpg"},
+    {id:"hgc",name:"Hoji Grey",price:24,e:"🫖",
+     desc:"Hojicha, earl grey & white chocolate ganache",
+     img:"assets/order/hoji-grey-c.jpg"},
+    {id:"ymc",name:"Yuri Matcha",price:24,e:"🍵",
+     desc:"Niko Neko matcha, raisin, earl grey, almond & white chocolate feuillentine",
+     b:["New"],img:"assets/order/yuri-matcha-c.jpg"},
+    {id:"rog",name:"Rose of Grace",price:26,e:"🌹",
+     desc:"Strawberry, cranberry, almond & white chocolate",
+     b:["New"],img:"assets/order/rose-grace.jpg"},
+    {id:"mmc",name:"Matcha-misu",price:24,e:"🍵",
+     desc:"Niko-Neko matcha, caramelised pecan & almond, mascarpone cheese & Lescure whipping cream",
+     b:["Best Seller"],img:"assets/order/matcha-misu-c.jpg"},
+    {id:"pkm",name:"Pinku Mint",price:25,e:"🌿",
+     desc:"Valrhona Opalys white chocolate, mint & peach",
+     img:"assets/order/pinku-mint.jpg"},
+    {id:"egc",name:"Earl Grey",price:23,e:"🫖",
+     desc:"Earl Grey tea, soya bean cremeux, almond sabre & Valrhona white chocolate coating",
+     b:["Best Seller"],img:"assets/order/earl-grey-c.jpg"},
+  ]},
+  {name:"Basque Burnt Cheesecake — Per Slice",items:[
+    {id:"bbo",name:"Basque Burnt Cheese — Original",price:18,e:"🧀",
+     desc:"Utoo signature Basque Burnt Cheesecake, classic & creamy. Per slice (~200g).",
+     b:["Best Seller"],img:"assets/order/basque-orig.jpg"},
+    {id:"bbc",name:"Basque Burnt Cheese — Cempedak",price:20,e:"🧀",
+     desc:"Utoo Basque Burnt Cheesecake with fragrant cempedak. Per slice (~200g).",
+     b:["Best Seller"],img:"assets/order/basque-cemp.jpg"},
+    {id:"bbd",name:"Basque Burnt Cheese — Penang Durian",price:22,e:"🧀",
+     desc:"Utoo Basque Burnt Cheesecake with authentic Penang durian. Per slice (~200g).",
+     b:["New"],img:"assets/order/basque-dur.jpg"},
+  ]},
+  {name:"Desserts",items:[
+    {id:"pcg",name:"Panna Cotta & Granola",price:25,e:"🌸",
+     desc:"Panna cotta with passion fruit sauce, honey coated granola, Greek yogurt, rose flakes, mixed nuts, edible flowers & tropical fruits. Great for sharing.",
+     b:["Best Seller","Sharing"],img:"assets/order/panna-cotta.jpg"},
+  ]},
+  {name:"Canelé Box — French Pastry",items:[
+    {id:"cm3",name:"Mix Canelé Box (3 pcs)",price:25,e:"🎁",
+     desc:"Any 3 flavours — Matcha / Espresso / Vanilla. Write your choice in Special Notes below.",
+     b:["Best Seller"],img:"assets/order/canele.jpg"},
+    {id:"cmat",name:"Matcha Canelé (1 pc)",price:9,e:"🍵",
+     desc:"French caramelised shell with moist & custardy matcha interior. Classic Bordeaux pastry since the 18th century.",
+     img:"assets/order/canele.jpg"},
+    {id:"cesp",name:"Espresso Canelé (1 pc)",price:9,e:"☕",
+     desc:"French caramelised shell with moist & custardy espresso interior",
+     img:"assets/order/canele.jpg"},
+    {id:"cvan",name:"Vanilla Canelé (1 pc)",price:8,e:"🤍",
+     desc:"French caramelised shell with moist & custardy vanilla interior",
+     img:"assets/order/canele.jpg"},
+  ]},
+  {name:"Bakery — House-Baked Sourdough",items:[
+    {id:"sdw",name:"Wholemeal Sourdough Loaf",price:22,e:"🍞",
+     desc:"Slow-fermented 24hrs with natural wild yeast, chemical-free. Uncut, ±600g. Rich in fibre, low in gluten.",
+     b:["New"],img:"assets/order/big-breakfast.jpg"},
+    {id:"sds",name:"Seeded Sourdough Loaf",price:22,e:"🌾",
+     desc:"Seeded sourdough slow-fermented 24hrs with natural wild yeast. Uncut, ±600g.",
+     b:["New"],img:"assets/order/big-breakfast.jpg"},
+  ]},
+]},
+
+{id:"drinks",label:"Drinks",icon:"☕",subcats:[
+  {name:"Coffee",items:[
+    {id:"esp",name:"Espresso",price:8,e:"☕",desc:"Pure single-origin espresso shot. Hot or iced — add note.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"ame",name:"Americano",price:9,e:"☕",desc:"Espresso with hot water. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"cfl",name:"Caffe Latte",price:12,e:"🥛",desc:"Smooth espresso with steamed milk. Hot or iced.",img:"assets/order/matcha-latte.jpg"},
+    {id:"cap",name:"Cappuccino",price:12,e:"☕",desc:"Espresso with equal parts steamed & foamed milk. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"cmo",name:"Caffe Mocha",price:14,e:"🍫",desc:"Espresso with chocolate & steamed milk. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"mac",name:"Macchiato",price:12,e:"☕",desc:"Espresso with a dollop of milk foam. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"cam",name:"Caramel Macchiato",price:15,e:"🍮",desc:"Vanilla espresso with steamed milk & caramel drizzle. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"lwc",name:"Local White Coffee",price:12,e:"☕",desc:"Classic Malaysian white coffee. Sugar or non-sugar — add note. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"clt",name:"Coconut Latte",price:15,e:"🥥",desc:"Espresso with creamy coconut milk. Hot or iced.",img:"assets/order/matcha-latte.jpg"},
+    {id:"flw",name:"Flat White",price:12,e:"☕",desc:"Ristretto shots with velvety microfoam milk.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"pic",name:"Piccolo Latte",price:12,e:"☕",desc:"Small ristretto with steamed milk. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"dal",name:"Dalgona Latte",price:18,e:"🍮",desc:"Whipped coffee foam over iced milk.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"rlt",name:"Rose Latte",price:15,e:"🌹",desc:"Floral rose-infused espresso latte. Hot or iced.",img:"assets/order/matcha-latte.jpg"},
+    {id:"hlt",name:"Hazelnut Latte",price:15,e:"🌰",desc:"Espresso with hazelnut syrup & steamed milk. Hot or iced.",img:"assets/order/matcha-latte.jpg"},
+    {id:"dtm",name:"Dirty Matcha",price:17,e:"🍵",desc:"Espresso shot over ceremonial-grade matcha latte. Hot or iced.",b:["Popular"],img:"assets/order/dirty-matcha.jpg"},
+    {id:"vlt",name:"Vanilla Latte",price:15,e:"🤍",desc:"Smooth vanilla espresso latte. Hot or iced.",img:"assets/order/matcha-latte.jpg"},
+    {id:"afge",name:"Affogato — Espresso",price:20,e:"🍦",desc:"Hot espresso shot poured over a scoop of vanilla ice cream.",img:"assets/order/dirty-matcha.jpg"},
+  ]},
+  {name:"Non-Coffee",items:[
+    {id:"nkm",name:"Niko Neko Matcha Latte",price:15,e:"🍵",desc:"Premium Niko Neko ceremonial matcha with steamed milk. Hot or iced.",b:["Popular"],img:"assets/order/matcha-latte.jpg"},
+    {id:"choc",name:"Chocolate",price:14,e:"🍫",desc:"Rich creamy chocolate. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"hbc",name:"Honey Baby Cino",price:8,e:"🍼",desc:"Warm frothy milk with honey drizzle. Perfect for little ones.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"hle",name:"Honey Lemon",price:11,e:"🍋",desc:"Freshly squeezed lemon with honey. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"stm",name:"Strawberry Milk",price:19,e:"🍓",desc:"Fresh strawberry purée with cold milk.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"foj",name:"Fresh Orange Juice (3 oranges)",price:12,e:"🍊",desc:"Freshly squeezed from 3 whole oranges.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"afgm",name:"Affogato — Niko Neko Matcha",price:20,e:"🍵",desc:"Niko Neko matcha poured over a scoop of vanilla ice cream.",img:"assets/order/matcha-latte.jpg"},
+  ]},
+  {name:"Tea — RM 14 each (BOH Latte RM 12)",items:[
+    {id:"teb",name:"English Breakfast Tea",price:14,e:"🫖",desc:"Classic full-bodied black tea. Hot.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"tch",name:"Chamomile Herbal Tea",price:14,e:"🌼",desc:"Soothing floral chamomile. Hot.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"teg",name:"Organic Earl Grey Tea",price:14,e:"🫖",desc:"Fragrant bergamot-infused black tea. Hot.",b:["Popular"],img:"assets/order/dirty-matcha.jpg"},
+    {id:"tjs",name:"Japanese Sencha Tea",price:14,e:"🍵",desc:"Light, refreshing Japanese green tea. Hot.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"tpo",name:"Pomegranate Oolong Tea",price:14,e:"🫖",desc:"Fragrant oolong with hints of pomegranate. Hot.",b:["Popular"],img:"assets/order/dirty-matcha.jpg"},
+    {id:"tcm",name:"Chocolate Mint Tea",price:14,e:"🍃",desc:"Refreshing chocolate mint herbal blend. Hot.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"tbl",name:"Malaysia BOH Tea Latte",price:12,e:"🧋",desc:"Beloved Malaysian BOH tea with steamed milk. Sugar or non-sugar — add note. Hot or iced.",img:"assets/order/dirty-matcha.jpg"},
+  ]},
+  {name:"Smoothie Bar — Low Fat, No Added Sugar",items:[
+    {id:"ptp",name:"Pitaya Paradise",price:16,e:"🐉",cal:"426",desc:"Pitaya, banana, low-fat yogurt & coconut water.",img:"assets/order/pitaya.jpg"},
+    {id:"mta",name:"Mango Tango",price:16,e:"🥭",cal:"442",desc:"Tropical mango, banana, low-fat yogurt & coconut water.",img:"assets/order/mango-tango.jpg"},
+    {id:"psr",name:"Passion Sunrise",price:18,e:"🌅",cal:"501",desc:"Passion fruit, mango, banana, low-fat yogurt & coconut water.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"avi",name:"Avocado Island",price:18,e:"🥑",cal:"538",desc:"Avocado, spinach, mango, banana, low-fat yogurt & coconut water.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"pgv",name:"Pink Guava",price:18,e:"🍈",cal:"366",desc:"Pink guava, banana, low-fat yogurt & coconut water. No added sugar.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"btr",name:"Berries Treasure",price:18,e:"🫐",cal:"437",desc:"Mix berries, pitaya, banana, low-fat yogurt & coconut water. No added sugar.",img:"assets/order/berries.jpg"},
+    {id:"cjk",name:"Coco Jumbo Shake",price:16,e:"🥥",cal:"541",desc:"Coconut water, coconut milk, coconut ice cream, honey & desiccated coconut.",b:["New"],img:"assets/order/dirty-matcha.jpg"},
+  ]},
+  {name:"Soda Cooler",items:[
+    {id:"pslr",name:"Pink Salt Lychee Rose",price:16,e:"🌹",desc:"Rose syrup, lime, lychee & pink salt.",b:["Best Seller"],img:"assets/order/pink-lychee.jpg"},
+    {id:"amt",name:"Apple Mint Tabasco",price:19,e:"🍏",desc:"Apple purée, jasmine tea, mint & tabasco blueberry.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"vts",name:"Vitamin Sea",price:16,e:"💙",desc:"Blue lagoon, mint syrup & lemon juice.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"ssp",name:"Summer Sipper",price:16,e:"☀️",desc:"Passion fruit, honey & jasmine tea.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"fmj",name:"Fresh Mojito Feel",price:18,e:"🌿",desc:"Pineapple syrup, mint, lime & lemon juice.",b:["Best Seller"],img:"assets/order/dirty-matcha.jpg"},
+    {id:"strs",name:"Strawberry Tea",price:16,e:"🍓",desc:"Strawberry purée, green tea & fresh strawberry.",b:["Best Seller"],img:"assets/order/straw-tea.jpg"},
+    {id:"lmc",name:"Lychee Mocktail",price:16,e:"🌺",desc:"Lychee syrup, earl grey tea, lemon juice & lychee fruits.",img:"assets/order/dirty-matcha.jpg"},
+    {id:"sbl",name:"Sunset Boulevard",price:16,e:"🌇",desc:"Orange juice, lemon juice, blue lagoon & blueberry.",b:["Best Seller"],img:"assets/order/sunset-blvd.jpg"},
+  ]},
+]},
+
+]; // END OF MENU DATA
+
+// ════════════════════════
+// STATE
+// ════════════════════════
+var cart={}, tableNum="", activeTab=MENU[0].id;
+
+// ════════════════════════
+// BOOT
+// ════════════════════════
+(function(){
+  var p=new URLSearchParams(window.location.search),t=p.get("table");
+  if(t){tableNum=t;setTpill(t);}else{openTM();}
+  buildTabs();renderTab(activeTab);
+})();
+
+// ════════════════════════
+// TABLE MODAL
+// ════════════════════════
+function openTM(){
+  document.getElementById("tm").classList.remove("hide");
+  var g=document.getElementById("tgrid");g.innerHTML="";
+  for(var i=1;i<=TOTAL_TABLES;i++){(function(n){
+    var b=document.createElement("button");
+    b.className="tbtn";b.textContent=n;b.onclick=function(){pickT(n);};g.appendChild(b);
+  })(i);}
+}
+function pickT(n){tableNum=String(n);setTpill(tableNum);document.getElementById("tm").classList.add("hide");}
+function setTpill(n){document.getElementById("tdsp").textContent=(n==="Takeaway")?n:"Table "+n;}
+
+// ════════════════════════
+// TABS
+// ════════════════════════
+function buildTabs(){
+  var nav=document.getElementById("tabs");nav.innerHTML="";
+  MENU.forEach(function(c){
+    var b=document.createElement("button");
+    b.className="tab"+(c.id===activeTab?" on":"");b.dataset.cid=c.id;
+    b.innerHTML=c.icon+" "+c.label+' <span class="tcnt" id="tc-'+c.id+'">0</span>';
+    b.onclick=function(){switchTab(c.id);};nav.appendChild(b);
+  });
+}
+function switchTab(cid){
+  activeTab=cid;
+  document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("on",t.dataset.cid===cid);});
+  renderTab(cid);
+  window.scrollTo({top:document.getElementById("tabs").offsetTop-64,behavior:"smooth"});
+}
+
+// ════════════════════════
+// RENDER
+// ════════════════════════
+function badgeCls(b){
+  if(b==="Best Seller")return"badge bs";if(b==="Vegan")return"badge vg";
+  if(b==="New")return"badge nw";if(b==="Sharing")return"badge sh";return"badge ot";
+}
+function renderTab(cid){
+  var cat=MENU.find(function(c){return c.id===cid;});if(!cat)return;
+  var h="";
+  cat.subcats.forEach(function(sub){
+    h+='<div class="sch">'+sub.name+'</div>';
+    sub.items.forEach(function(it){
+      var qty=cart[it.id]||0;
+      var bdg=(it.b||[]).map(function(b){return'<span class="'+badgeCls(b)+'">'+b+'</span>';}).join("");
+      h+='<div class="icard'+(qty>0?" on":"")+'" id="cd-'+it.id+'">'
+        +'<div class="iemoji" id="et-'+it.id+'">'+(it.e||"🍽️")+'</div>'
+        +'<div class="ibody">'
+          +(bdg?'<div class="badges">'+bdg+'</div>':"")
+          +'<div class="iname">'+it.name+'</div>'
+          +'<div class="idesc">'+it.desc+'</div>'
+          +'<div class="ifoot">'
+            +'<span><span class="iprice">RM '+it.price+'</span>'+(it.cal?'<span class="ical">~'+it.cal+' kcal</span>':"")+'</span>'
+            +'<div class="qc">'
+              +'<button class="qbtn m" onclick="chQ(\''+it.id+'\',-1)">−</button>'
+              +'<span class="qnum" id="qn-'+it.id+'">'+qty+'</span>'
+              +'<button class="qbtn p" onclick="chQ(\''+it.id+'\',1)">+</button>'
+            +'</div>'
+          +'</div>'
+        +'</div>'
+        +'</div>';
+    });
+  });
+  h+='<div class="nbox"><label>Special Requests / Notes</label>'
+    +'<textarea id="snotes" placeholder="Egg style (scrambled/poached etc), hot or cold drinks, allergies, less sugar, spice level…"></textarea></div>';
+  document.getElementById("menuMain").innerHTML=h;
+  syncUI();loadImgs(cat);
+}
+function loadImgs(cat){
+  cat.subcats.forEach(function(s){s.items.forEach(function(it){
+    if(!it.img)return;
+    var el=document.getElementById("et-"+it.id);if(!el)return;
+    var img=new Image();
+    img.onload=function(){
+      var fresh=document.getElementById("et-"+it.id);
+      if(!fresh||!fresh.parentNode)return;
+      var i=document.createElement("img");i.src=it.img;i.className="ithumb";i.alt=it.name;
+      fresh.parentNode.replaceChild(i,fresh);
+    };img.src=it.img;
+  });});
+}
+
+// ════════════════════════
+// CART
+// ════════════════════════
+function findIt(id){
+  for(var ci=0;ci<MENU.length;ci++)for(var si=0;si<MENU[ci].subcats.length;si++)
+    for(var ii=0;ii<MENU[ci].subcats[si].items.length;ii++)
+      if(MENU[ci].subcats[si].items[ii].id===id)return MENU[ci].subcats[si].items[ii];
+  return null;
+}
+function chQ(id,d){
+  cart[id]=Math.max(0,(cart[id]||0)+d);
+  if(!cart[id])delete cart[id];
+  var qn=document.getElementById("qn-"+id),cd=document.getElementById("cd-"+id);
+  if(qn)qn.textContent=cart[id]||0;
+  if(cd)cd.classList.toggle("on",(cart[id]||0)>0);
+  updateFtr();
+}
+function syncUI(){
+  Object.keys(cart).forEach(function(id){
+    var qn=document.getElementById("qn-"+id),cd=document.getElementById("cd-"+id);
+    if(qn)qn.textContent=cart[id];if(cd)cd.classList.toggle("on",cart[id]>0);
+  });
+}
+function updateFtr(){
+  var total=0,cnt=0,tc={};
+  MENU.forEach(function(c){tc[c.id]=0;});
+  Object.keys(cart).forEach(function(id){
+    var it=findIt(id),q=cart[id];if(!it||!q)return;
+    total+=it.price*q;cnt+=q;
+    MENU.forEach(function(c){
+      c.subcats.forEach(function(s){s.items.forEach(function(i){
+        if(i.id===id)tc[c.id]=(tc[c.id]||0)+q;
+      });});
+    });
+  });
+  document.getElementById("totDisp").textContent=total.toFixed(2);
+  document.getElementById("cntLbl").textContent=cnt+" item"+(cnt!==1?"s":"");
+  var btn=document.getElementById("sbtn");
+  if(cnt>0){btn.disabled=false;btn.textContent="Place Order ("+cnt+" item"+(cnt!==1?"s":"")+")\u00a0\u2192";}
+  else{btn.disabled=true;btn.textContent="Add items to order";}
+  MENU.forEach(function(c){
+    var tce=document.getElementById("tc-"+c.id),te=document.querySelector('[data-cid="'+c.id+'"]');
+    if(tce)tce.textContent=tc[c.id]||0;if(te)te.classList.toggle("has",(tc[c.id]||0)>0);
+  });
+}
+
+// ════════════════════════
+// SUBMIT
+// ════════════════════════
+function submit(){
+  var name=(document.getElementById("cname").value||"").trim();
+  var sn=document.getElementById("snotes"),notes=sn?(sn.value||"").trim():"";
+  if(!name){
+    document.getElementById("cname").focus();
+    document.getElementById("cname").style.borderColor="var(--terra)";
+    document.getElementById("cname").placeholder="Please enter your name first ✦";
+    window.scrollTo({top:0,behavior:"smooth"});return;
+  }
+  if(!tableNum){openTM();return;}
+  var btn=document.getElementById("sbtn");
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Sending…';
+  var items=[],total=0;
+  Object.keys(cart).forEach(function(id){
+    var it=findIt(id),q=cart[id];if(!it||!q)return;
+    items.push({name:it.name,qty:q,price:it.price,sub:it.price*q});total+=it.price*q;
+  });
+  var oid=genOid();
+  var txt=items.map(function(i){return"  • "+i.qty+"× "+i.name+" (RM "+i.sub.toFixed(2)+")";}).join("\n");
+  if(notes)txt+="\n\n  📝 Notes: "+notes;
+  fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({orderId:oid,table:tableNum,customerName:name,items:txt,total:total.toFixed(2)})
+  }).then(function(){showReceipt(oid,name,items,total,notes);})
+  .catch(function(){btn.disabled=false;btn.textContent="Retry — please try again";});
+}
+function genOid(){
+  var c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",s="UB-";
+  for(var i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s;
+}
+
+// ════════════════════════
+// RECEIPT
+// ════════════════════════
+function showReceipt(oid,name,items,total,notes){
+  var now=new Date();
+  var t=now.toLocaleTimeString("en-MY",{hour:"2-digit",minute:"2-digit",timeZone:"Asia/Kuala_Lumpur"});
+  var d=now.toLocaleDateString("en-MY",{day:"numeric",month:"short",year:"numeric",timeZone:"Asia/Kuala_Lumpur"});
+  var tbl=(tableNum==="Takeaway"||isNaN(tableNum))?tableNum:"Table "+tableNum;
+  var ih=items.map(function(i){
+    return'<div class="ritem"><span class="riname">'+i.name+'</span>'
+      +'<span class="riqty">'+i.qty+'×</span><span class="riprice">RM '+i.sub.toFixed(2)+'</span></div>';
+  }).join("");
+  document.getElementById("rc").innerHTML=
+    '<div style="font-size:44px;text-align:center;margin-bottom:10px;">✅</div>'
+    +'<div class="mtitle" style="margin-bottom:3px;">Order Placed!</div>'
+    +'<p class="msub" style="margin-bottom:14px;">Your order is heading to our kitchen.<br>Sit back & enjoy the vibe ☕</p>'
+    +'<div class="rinfo">'
+      +'<div class="rrow"><span class="rlbl">Order ID</span>'
+        +'<span class="roid">'+oid+'</span></div>'
+      +'<div class="rrow"><span class="rlbl">Table</span><span class="rval">'+tbl+'</span></div>'
+      +'<div class="rrow"><span class="rlbl">Name</span><span class="rval">'+name+'</span></div>'
+      +'<div class="rrow"><span class="rlbl">Time</span><span class="rval">'+t+' · '+d+'</span></div>'
+    +'</div>'
+    +'<div style="margin-bottom:10px;">'+ih+'</div>'
+    +(notes?'<div style="background:var(--warm);border-radius:7px;padding:8px 11px;font-size:11px;color:var(--muted);margin-bottom:10px;">📝 '+notes+'</div>':"")
+    +'<div class="rtotal"><span class="rtlbl">Total</span><span class="rtamt">RM '+total.toFixed(2)+'</span></div>'
+    +'<button class="rnbtn" onclick="resetOrd()">✦ Place Another Order</button>';
+  document.getElementById("rm").classList.remove("hide");
+}
+function resetOrd(){
+  cart={};document.getElementById("rm").classList.add("hide");
+  document.getElementById("cname").value="";
+  renderTab(activeTab);updateFtr();window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
