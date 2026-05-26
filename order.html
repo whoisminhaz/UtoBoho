@@ -216,7 +216,7 @@ main{padding-bottom:115px;}
 // ════════════════════════════════════════
 // ① PASTE YOUR APPS SCRIPT URL HERE
 // ════════════════════════════════════════
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwA9GVUDh7cbt1lVogPSB-Uzu86Nl0EZfRSo-ImcdMxriAj-JO5DBArqYm7qTDZ0HQ/";
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwA9GVUDh7cbt1lVogPSB-Uzu86Nl0EZfRSo-ImcdMxriAj-JO5DBArqYm7qTDZ0HQ/exec";
 
 // ════════════════════════════════════════
 // ② CHANGE THIS TO YOUR TOTAL TABLE COUNT
@@ -709,17 +709,8 @@ function submit(){
   var oid=genOid();
   var txt=items.map(function(i){return"  • "+i.qty+"× "+i.name+" (RM "+i.sub.toFixed(2)+")";}).join("\n");
   if(notes)txt+="\n\n  📝 Notes: "+notes;
-  fetch(SCRIPT_URL,{
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify({
-      action: "newOrder", 
-      orderId: oid, 
-      table: tableNum, 
-      customer: name, 
-      items: txt, 
-      total: parseFloat(total)
-    })
+  fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({action: "newOrder", orderId:oid, table:tableNum, customer:name, items:txt, total:parseFloat(total)})
   }).then(function(){showReceipt(oid,name,items,total,notes);})
   .catch(function(){btn.disabled=false;btn.textContent="Retry — please try again";});
 }
