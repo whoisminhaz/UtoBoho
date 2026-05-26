@@ -396,16 +396,17 @@
       const tbody = document.querySelector('#liveOrdersTbl tbody');
       tbody.innerHTML = "";
       
-      if (orders.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='6'>No orders found in database.</td></tr>";
+      if (!orders || orders.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='6'>No active orders.</td></tr>";
         return;
       }
 
       orders.forEach(o => {
+        // --- SAFETY GATE: If order is empty, skip it immediately ---
+        if (!o || !o.orderId || o.orderId === "—") return; 
+
         const isDone = o.status; 
-        
-        let timeText = String(o.timestamp);
-        if (timeText === "Invalid Date") timeText = "Recent"; // Failsafe
+        const time = o.timestamp; 
         
         tbody.innerHTML += `
           <tr class="${isDone ? 'done' : ''}">
@@ -413,7 +414,7 @@
             <td><strong>${o.table}</strong><br><span style="font-size:0.85rem;color:var(--text-muted)">${o.customer}</span></td>
             <td><div class="items-list">${o.items}</div></td>
             <td><strong>RM ${o.total.toFixed(2)}</strong></td>
-            <td>${timeText}</td>
+            <td>${time}</td>
             <td>
               ${isDone 
                 ? '<span style="color:var(--success);font-weight:600;">Completed</span>' 
