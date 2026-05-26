@@ -404,8 +404,8 @@
       orders.forEach(o => {
         const isDone = o.status; 
         
-        // THIS FIXES THE INVALID DATE BUG
-        const time = o.timestamp; 
+        let timeText = String(o.timestamp);
+        if (timeText === "Invalid Date") timeText = "Recent"; // Failsafe
         
         tbody.innerHTML += `
           <tr class="${isDone ? 'done' : ''}">
@@ -413,7 +413,7 @@
             <td><strong>${o.table}</strong><br><span style="font-size:0.85rem;color:var(--text-muted)">${o.customer}</span></td>
             <td><div class="items-list">${o.items}</div></td>
             <td><strong>RM ${o.total.toFixed(2)}</strong></td>
-            <td>${time}</td>
+            <td>${timeText}</td>
             <td>
               ${isDone 
                 ? '<span style="color:var(--success);font-weight:600;">Completed</span>' 
