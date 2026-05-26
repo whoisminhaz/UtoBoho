@@ -709,9 +709,21 @@ function submit(){
   var oid=genOid();
   var txt=items.map(function(i){return"  • "+i.qty+"× "+i.name+" (RM "+i.sub.toFixed(2)+")";}).join("\n");
   if(notes)txt+="\n\n  📝 Notes: "+notes;
-  fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({action: "newOrder", orderId:oid, table:tableNum, customer:name, items:txt, total:parseFloat(total)})
-  }).then(function(){showReceipt(oid,name,items,total,notes);})
+ var payload = {
+    action: "newOrder", 
+    orderId: oid, 
+    table: tableNum, 
+    customer: name, 
+    items: txt, 
+    total: parseFloat(total)
+  };
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(payload) 
+    // Notice: We removed the headers and mode completely to bypass CORS.
+  })
+  .then(function(){showReceipt(oid,name,items,total,notes);})
   .catch(function(){btn.disabled=false;btn.textContent="Retry — please try again";});
 }
 function genOid(){
