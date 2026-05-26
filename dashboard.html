@@ -362,9 +362,9 @@
         rTbody.innerHTML = "<tr><td colspan='3'>No orders today</td></tr>";
       } else {
         recent.forEach(o => {
-          // THIS FIXES THE INVALID DATE BUG
-          const time = o.timestamp; 
-          rTbody.innerHTML += `<tr><td class="order-id">${o.orderId}</td><td>RM ${o.total.toFixed(2)}</td><td>${time}</td></tr>`;
+          let timeText = String(o.timestamp);
+          if (timeText === "Invalid Date") timeText = "Recent"; // Failsafe
+          rTbody.innerHTML += `<tr><td class="order-id">${o.orderId}</td><td>RM ${o.total.toFixed(2)}</td><td>${timeText}</td></tr>`;
         });
       }
 
