@@ -36,7 +36,6 @@
     .nav-links a.active { background: rgba(181,96,42,0.15); border-left: 4px solid var(--terra); border-radius: 0 8px 8px 0; }
     .logout-btn { margin: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.05); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: 0.2s; }
     .logout-btn:hover { background: rgba(255,255,255,0.1); }
-    .chart-wrapper { position: relative; height: 250px; width: 100%; }
 
     /* MAIN CONTENT */
     #mainContent { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -67,6 +66,9 @@
     .panel { background: var(--white); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 2rem; }
     .panel-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--sidebar); padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
 
+    /* THIS FIXES THE BLACK SCREEN GPU CRASH */
+    .chart-wrapper { position: relative; height: 250px; width: 100%; }
+
     /* TABLES */
     .table-responsive { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; }
@@ -75,8 +77,10 @@
     tr.done { opacity: 0.5; }
     tr.done td { text-decoration: line-through; }
     
+    /* THIS FIXES THE RED "DONE ?" BUTTON */
     .btn-done { background: #ffebee; color: var(--danger); border: 1px solid #ffcdd2; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
     .btn-done:hover { background: #ffcdd2; }
+    
     .items-list { font-size: 0.85rem; color: var(--text-muted); white-space: pre-wrap; line-height: 1.5; }
     .order-id { font-family: 'Cormorant Garamond', serif; font-weight: 700; color: var(--terra); font-size: 1.1rem; }
 
@@ -93,7 +97,7 @@
       .brand { padding: 1rem; font-size: 1.4rem; border: none; }
       .nav-links { display: flex; overflow-x: auto; padding: 0; margin: 0; }
       .nav-links a { padding: 1rem; font-size: 0.9rem; }
-      .nav-links a span { display: none; } /* Hide text on mobile nav */
+      .nav-links a span { display: none; } 
       .logout-btn { margin: 0.5rem; padding: 0.5rem 1rem; }
       .dash-grid { grid-template-columns: 1fr; }
       .content-wrapper { padding: 1.5rem; }
@@ -166,7 +170,9 @@
           </div>
           <div class="panel">
             <h3 class="panel-title">Today's Sales Trend</h3>
-            <canvas id="salesChart" height="200"></canvas>
+            <div class="chart-wrapper">
+              <canvas id="salesChart"></canvas>
+            </div>
           </div>
         </div>
       </section>
@@ -212,8 +218,10 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    // MATCH THIS URL TO YOUR DEPLOYED GOOGLE APPS SCRIPT
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwA9GVUDh7cbt1lVogPSB-Uzu86Nl0EZfRSo-ImcdMxriAj-JO5DBArqYm7qTDZ0HQ/exec";
+    // ══════════════════════════════════════════════════
+    // PASTE YOUR NEW SCRIPT_URL HERE
+    // ══════════════════════════════════════════════════
+    const SCRIPT_URL = "PASTE_YOUR_NEW_URL_HERE";
     
     let chartInstance = null;
     let isStoreOpen = true;
@@ -297,10 +305,8 @@
 
     function initDashboard() {
       syncAll();
-      // Rate Limit: Strictly 60 seconds
       setInterval(syncAll, 60000);
       
-      // Load Settings once for Store Status
       apiGet("settings").then(data => {
         if(data && data.is_open !== undefined) {
           isStoreOpen = String(data.is_open).toUpperCase() === "TRUE";
@@ -342,7 +348,6 @@
       document.getElementById('stRev').textContent = `RM ${data.todaySales.toFixed(2)}`;
       document.getElementById('stOrd').textContent = data.todayOrders;
       
-      // Format Peak Hour (e.g. 14 -> 2:00 PM)
       const ph = data.peakHour;
       const phStr = ph === 0 && data.todayOrders === 0 ? "-" : 
                     (ph === 12 ? "12 PM" : ph > 12 ? `${ph-12} PM` : `${ph} AM`);
@@ -350,7 +355,6 @@
       
       document.getElementById('stTop').textContent = data.topItems.length > 0 ? data.topItems[0].item : "-";
 
-      // Render Recent 5 (for Dashboard tab)
       const rTbody = document.querySelector('#recentOrdersTbl tbody');
       rTbody.innerHTML = "";
       const recent = data.recentOrders.slice(0, 5);
@@ -358,12 +362,12 @@
         rTbody.innerHTML = "<tr><td colspan='3'>No orders today</td></tr>";
       } else {
         recent.forEach(o => {
-          const time = new Date(o.timestamp).toLocaleTimeString('en-MY', {hour:'2-digit', minute:'2-digit'});
+          // THIS FIXES THE INVALID DATE BUG
+          const time = o.timestamp; 
           rTbody.innerHTML += `<tr><td class="order-id">${o.orderId}</td><td>RM ${o.total.toFixed(2)}</td><td>${time}</td></tr>`;
         });
       }
 
-      // Chart.js Update
       const labels = data.hourlyBreakdown.map(d => d.hour + ":00");
       const values = data.hourlyBreakdown.map(d => d.orderCount);
       
@@ -398,8 +402,10 @@
       }
 
       orders.forEach(o => {
-        const isDone = o.status; // boolean
-        const time = new Date(o.timestamp).toLocaleTimeString('en-MY', {hour:'2-digit', minute:'2-digit'});
+        const isDone = o.status; 
+        
+        // THIS FIXES THE INVALID DATE BUG
+        const time = o.timestamp; 
         
         tbody.innerHTML += `
           <tr class="${isDone ? 'done' : ''}">
@@ -411,7 +417,7 @@
             <td>
               ${isDone 
                 ? '<span style="color:var(--success);font-weight:600;">Completed</span>' 
-                : `<button class="btn-done" onclick="markOrderDone('${o.orderId}')">Mark Done ✓</button>`
+                : `<button class="btn-done" onclick="markOrderDone('${o.orderId}')">Done ?</button>`
               }
             </td>
           </tr>
@@ -428,7 +434,7 @@
       
       if(res.status === "ok") {
         showToast("Order completed!", "var(--success)");
-        syncAll(); // Refresh tables
+        syncAll(); 
       } else {
         showToast("Error updating order.", "var(--danger)");
       }
@@ -443,7 +449,6 @@
       if(res.status === "ok") {
         showToast(`Store is now ${isStoreOpen ? 'OPEN' : 'CLOSED'}`, isStoreOpen ? "var(--success)" : "var(--danger)");
       } else {
-        // Revert on fail
         isStoreOpen = !isStoreOpen;
         updateStatusUI();
         showToast("Failed to update status", "var(--danger)");
