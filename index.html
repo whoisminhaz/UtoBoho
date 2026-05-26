@@ -11,7 +11,6 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav id="navbar">
   <a class="nav-logo" href="#home"><span>Utoo</span> Boho Café</a>
   <ul class="nav-links">
@@ -24,14 +23,13 @@
   </ul>
   <div class="nav-actions">
     <a href="https://www.instagram.com/utoo.bohocafe" target="_blank" class="btn-ig">📷 Instagram</a>
-    <a href="order.html" class="btn-wa">🛒 Order</a>
+    <a href="book.html" class="btn-book">📅 Book a Table</a>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">✕</button>
   <a href="#breakfast" >Breakfast</a>
@@ -41,10 +39,9 @@
   <a href="#full-menu">Full Menu</a>
   <a href="#contact">Contact</a>
   <a href="https://www.instagram.com/utoo.bohocafe" target="_blank" style="color:var(--gold)">📷 Instagram</a>
-  <a href="order.html" style="color:var(--gold)">🛒 Order Now</a>
+  <a href="book.html" style="color:var(--gold)">📅 Book a Table</a>
 </div>
 
-<!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-bg" style="background-image:url('assets/hero-main.jpg')"></div>
   <div class="hero-overlay"></div>
@@ -54,7 +51,7 @@
     <p>Signature breakfasts, handcrafted desserts, and specialty drinks in a warm modern café experience.</p>
     <div class="hero-btns">
       <a href="#full-menu" class="btn-primary">View Menu</a>
-      <a href="order.html" class="btn-outline">🛒 Order Now</a>
+      <a href="book.html" class="btn-outline">📅 Reserve Your Table</a>
       <a href="https://www.instagram.com/utoo.bohocafe" target="_blank" class="btn-outline">📷 Instagram</a>
     </div>
   </div>
@@ -64,7 +61,6 @@
   </div>
 </section>
 
-<!-- LIFESTYLE -->
 <section class="lifestyle" id="about">
   <div class="split-layout">
     <div class="split-img reveal" data-delay="1">
@@ -81,7 +77,6 @@
   </div>
 </section>
 
-<!-- INTERIOR -->
 <section class="interior" id="interior">
   <div class="interior-bg" style="background-image:url('assets/interior-wide.jpg')"></div>
   <div class="interior-overlay"></div>
@@ -92,7 +87,6 @@
   </div>
 </section>
 
-<!-- BREAKFAST -->
 <section id="breakfast" style="background:var(--cream);">
   <div class="menu-section">
     <div class="menu-header reveal">
@@ -129,7 +123,6 @@
   </div>
 </section>
 
-<!-- LUNCH -->
 <section id="lunch" class="lunch-section">
   <div class="menu-section">
     <div class="menu-header reveal">
@@ -166,7 +159,6 @@
   </div>
 </section>
 
-<!-- DESSERTS -->
 <section id="desserts" style="background:var(--cream);padding-bottom:2rem;">
   <div class="menu-header reveal" style="text-align:center;margin-bottom:3rem;padding:0 2rem;">
     <span class="section-tag">✦ Sweet Indulgence</span>
@@ -213,7 +205,6 @@
   </div>
 </section>
 
-<!-- DRINKS -->
 <section id="drinks" class="drinks-section">
   <div class="drink-showcase">
     <div>
@@ -253,7 +244,6 @@
   </div>
 </section>
 
-<!-- FULL MENU -->
 <section id="full-menu" class="full-menu-section">
   <div class="reveal">
     <span class="section-tag">✦ Complete Menu</span>
@@ -269,7 +259,6 @@
   </div>
 </section>
 
-<!-- WHATSAPP ORDER -->
 <section class="wa-section" id="order">
   <div class="menu-header reveal" style="text-align:center;margin-bottom:3rem;">
     <span class="section-tag">✦ Easy Ordering</span>
@@ -291,7 +280,6 @@
   </div>
 </section>
 
-<!-- INSTAGRAM -->
 <section class="ig-section" id="instagram">
   <div class="reveal">
     <span class="section-tag">✦ @utoo.bohocafe</span>
@@ -309,7 +297,22 @@
   </a>
 </section>
 
-<!-- MAP -->
+<section class="reservation-section" id="reservation">
+  <div style="text-align:center;max-width:1100px;margin:0 auto;">
+    <div class="reveal">
+      <span class="section-tag">✦ Reserve a Spot</span>
+      <h2 class="section-title">Reserve Your Table</h2>
+      <p class="section-sub" style="margin:0 auto 3.5rem;">Secure your perfect bohemian corner. Walk-ins welcome, but a reservation guarantees your table is ready.</p>
+    </div>
+    <div class="res-cards reveal" data-delay="1">
+      <div class="res-card"><div class="res-icon">🕐</div><h4>1 Hour Reserved Just For You</h4><p>Savour every bite without rushing — your table is exclusively yours for the full hour.</p></div>
+      <div class="res-card"><div class="res-icon">📅</div><h4>Book Up To 2 Weeks Ahead</h4><p>Plan your visit in advance — perfect for celebrations, dates, and group gatherings.</p></div>
+      <div class="res-card"><div class="res-icon">📞</div><h4>Instant Confirmation via Phone</h4><p>We'll call to confirm your booking so you know your table is ready and waiting.</p></div>
+    </div>
+    <a href="book.html" class="btn-primary reveal" data-delay="2" style="margin-top:3rem;display:inline-block;font-size:1.05rem;padding:1rem 3rem;">📅 Make a Reservation</a>
+  </div>
+</section>
+
 <section class="map-section" id="contact">
   <div class="map-container">
     <div class="map-header reveal">
@@ -318,7 +321,7 @@
       <p class="section-sub" style="margin:0 auto;">156, Victoria Street, George Town, Penang. Come visit us — we'd love to have you.</p>
     </div>
     <div class="map-frame reveal" data-delay="1">
-      <iframe src="https://maps.google.com/maps?q=156+Victoria+Street+George+Town+Penang&output=embed" width="100%" height="450" style="border:0;" allowfullscreen loading="lazy" title="Utoo Boho Café Location"></iframe>
+      <iframe src="https://maps.google.com/maps?q=156+Victoria+Street+George+Town+Penang&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="450" style="border:0; border-radius: 12px;" allowfullscreen loading="lazy" title="Utoo Boho Café Location"></iframe>
     </div>
     <div class="map-info reveal" data-delay="2">
       <div class="map-info-card">
@@ -338,13 +341,12 @@
       </div>
     </div>
     <div class="map-btns reveal" data-delay="3">
-      <a href="https://maps.app.goo.gl/1SPhJF1d7fXEFmdAA" target="_blank" class="btn-primary">📍 Open in Google Maps</a>
+      <a href="https://maps.google.com/maps?q=156+Victoria+Street+George+Town+Penang" target="_blank" class="btn-primary">📍 Open in Google Maps</a>
       <a href="https://wa.me/60124237147" target="_blank" class="btn-whatsapp">💬 WhatsApp Us</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
@@ -353,7 +355,7 @@
       <div class="footer-social">
         <a href="https://www.instagram.com/utoo.bohocafe" target="_blank" class="social-icon" aria-label="Instagram">📷</a>
         <a href="https://wa.me/60124237147" target="_blank" class="social-icon" aria-label="WhatsApp">💬</a>
-        <a href="https://maps.app.goo.gl/1SPhJF1d7fXEFmdAA" target="_blank" class="social-icon" aria-label="Maps">📍</a>
+        <a href="https://maps.google.com/maps?q=156+Victoria+Street+George+Town+Penang" target="_blank" class="social-icon" aria-label="Maps">📍</a>
       </div>
     </div>
     <div class="footer-col">
@@ -375,7 +377,7 @@
       <ul>
         <li><a href="https://www.instagram.com/utoo.bohocafe" target="_blank">Instagram</a></li>
         <li><a href="https://wa.me/60124237147" target="_blank">WhatsApp Order</a></li>
-        <li><a href="https://maps.app.goo.gl/1SPhJF1d7fXEFmdAA" target="_blank">Google Maps</a></li>
+        <li><a href="https://maps.google.com/maps?q=156+Victoria+Street+George+Town+Penang" target="_blank">Google Maps</a></li>
         <li><a href="https://drive.google.com/file/d/1FWgcLbtzYlQyaDVi7L0eJkvdcGQppLCV/view?usp=drivesdk" target="_blank">Full Menu PDF</a></li>
       </ul>
     </div>
@@ -386,5 +388,26 @@
 </footer>
 
 <script src="script.js"></script>
+
+<div id="announceBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:1100;background:linear-gradient(135deg,#b5602a,#d4845a);color:#fff;padding:10px 50px 10px 20px;font-size:0.9rem;text-align:center;box-shadow:0 2px 15px rgba(0,0,0,0.2);">
+  <span id="announceText"></span>
+  <button onclick="this.parentElement.style.display='none';sessionStorage.setItem('ub_ann_closed','1')" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;">✕</button>
+</div>
+<script>
+(function(){
+  if(sessionStorage.getItem('ub_ann_closed'))return;
+  // Ensure this URL matches your deployed Apps Script URL
+  var scriptUrl = 'https://script.google.com/macros/s/AKfycbwA9GVUDh7cbt1lVogPSB-Uzu86Nl0EZfRSo-ImcdMxriAj-JO5DBArqYm7qTDZ0HQ/exec';
+  fetch(scriptUrl + '?action=settings')
+    .then(r=>r.json()).then(d=>{
+      var a=d&&d.announcement;
+      if(a&&a.trim()){
+        document.getElementById('announceText').textContent=a;
+        document.getElementById('announceBanner').style.display='block';
+        document.getElementById('navbar').style.top='42px';
+      }
+    }).catch(function(){});
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book a Table - Utoo Boho Café</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root{ --cream:#FAF7F2; --beige:#F0E8D8; --brown:#5C3D2E; --espresso:#2C1810; --gold:#C9A84C; --text:#1A1208; --text-soft:#6B5744; --white:#FFFFFF; --terracotta:#b5602a; }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;}
+    h1,h2,h3{font-family:'Cormorant Garamond',serif;}
+    
+    /* HEADER */
+    header{background:rgba(250,247,242,0.92);backdrop-filter:blur(16px);padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(201,168,76,0.15);}
+    .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--espresso);text-decoration:none;letter-spacing:0.05em;}
+    .logo span{color:var(--gold);}
+    .back-btn{color:var(--espresso);text-decoration:none;font-weight:500;font-size:0.9rem;}
+    
+    /* MAIN CONTAINER */
+    .container{max-width:800px;margin:4rem auto;padding:0 2rem;}
+    .page-title{text-align:center;font-size:2.5rem;color:var(--espresso);margin-bottom:0.5rem;}
+    .page-sub{text-align:center;color:var(--text-soft);margin-bottom:3rem;}
+    
+    /* TABS */
+    .tabs{display:flex;justify-content:center;gap:2rem;margin-bottom:3rem;border-bottom:2px solid var(--beige);overflow-x:auto;white-space:nowrap;}
+    .tab{padding:1rem 0;color:var(--text-soft);cursor:pointer;font-weight:500;border-bottom:3px solid transparent;margin-bottom:-2px;transition:0.3s;}
+    .tab.active{color:var(--terracotta);border-color:var(--terracotta);}
+    
+    /* CONTENT BOX */
+    .box{background:var(--white);padding:3rem;border-radius:20px;box-shadow:0 10px 40px rgba(92,61,46,0.05);}
+    .step-section{display:none;animation:fadeIn 0.4s;}
+    .step-section.active{display:block;}
+    
+    /* FORMS */
+    .form-group{margin-bottom:1.5rem;}
+    label{display:block;margin-bottom:0.5rem;font-weight:500;color:var(--espresso);}
+    input,textarea{width:100%;padding:1rem;border:1px solid var(--beige);border-radius:8px;font-family:inherit;background:var(--cream);color:var(--text);transition:0.3s;}
+    input:focus,textarea:focus{outline:none;border-color:var(--terracotta);background:var(--white);}
+    
+    .btn-group{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+    .btn-person{padding:0.8rem;background:var(--cream);border:1px solid var(--beige);border-radius:8px;cursor:pointer;font-weight:500;transition:0.3s;}
+    .btn-person.selected{background:var(--terracotta);color:var(--white);border-color:var(--terracotta);}
+    
+    /* TIME SLOTS */
+    .time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px;}
+    .btn-time{padding:0.8rem;background:var(--cream);border:1px solid var(--beige);border-radius:8px;cursor:pointer;font-weight:500;transition:0.3s;}
+    .btn-time:hover:not(:disabled){border-color:var(--terracotta);color:var(--terracotta);}
+    .btn-time.selected{background:var(--terracotta);color:var(--white);border-color:var(--terracotta);}
+    .btn-time:disabled{background:#f5f5f5;color:#ccc;cursor:not-allowed;border-color:#eee;text-decoration:line-through;}
+    .loader-text{color:var(--terracotta);font-size:0.9rem;font-weight:500;display:none;margin-top:10px;}
+
+    .btn-primary{width:100%;padding:1.2rem;background:var(--terracotta);color:var(--white);border:none;border-radius:50px;font-size:1.1rem;font-weight:600;cursor:pointer;transition:0.3s;margin-top:2rem;}
+    .btn-primary:hover{background:#964d20;transform:translateY(-2px);}
+    .btn-primary:disabled{background:var(--text-soft);cursor:not-allowed;transform:none;}
+    
+    /* FAQ */
+    .faq{margin-top:4rem;background:var(--beige);padding:3rem;border-radius:20px;}
+    .faq h3{font-size:1.8rem;margin-bottom:1.5rem;color:var(--espresso);}
+    .faq-item{margin-bottom:1.5rem;}
+    .faq-item h4{font-size:1.1rem;color:var(--brown);margin-bottom:0.5rem;}
+    
+    .toast{position:fixed;bottom:2rem;right:2rem;background:#333;color:#fff;padding:1rem 2rem;border-radius:8px;opacity:0;transform:translateY(20px);transition:0.3s;z-index:1000;}
+    .toast.show{opacity:1;transform:translateY(0);}
+    
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    
+    @media(max-width:600px){
+      .btn-group{grid-template-columns:repeat(3,1fr);}
+      .time-grid{grid-template-columns:repeat(2,1fr);}
+      .box{padding:2rem 1.5rem;}
+      .tabs{gap:1rem;}
+      .tab{font-size:0.9rem;}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo"><span>Utoo</span> Boho Café</a>
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">Reserve a Table</h1>
+    <p class="page-sub">Experience the bohemian lifestyle</p>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(1)">1. Details</div>
+      <div class="tab" onclick="switchTab(2)">2. Date & Time</div>
+      <div class="tab" onclick="switchTab(3)">3. Confirm</div>
+      <div class="tab" onclick="switchTab(4)">Manage Booking</div>
+    </div>
+
+    <div class="box">
+      <div id="step1" class="step-section active">
+        <h2>Your Details</h2>
+        <p style="color:var(--text-soft);margin-bottom:2rem;">Tell us a bit about yourself.</p>
+        
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="bName" placeholder="e.g. Ahmad bin Ali">
+        </div>
+        
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="bPhone" placeholder="012-345 6789">
+        </div>
+        
+        <div class="form-group">
+          <label>Number of Persons *</label>
+          <div class="btn-group" id="personGroup">
+            <button class="btn-person selected" onclick="selectPerson(1)">1</button>
+            <button class="btn-person" onclick="selectPerson(2)">2</button>
+            <button class="btn-person" onclick="selectPerson(3)">3</button>
+            <button class="btn-person" onclick="selectPerson(4)">4</button>
+            <button class="btn-person" onclick="selectPerson(5)">5</button>
+            <button class="btn-person" onclick="selectPerson(6)">6</button>
+            <button class="btn-person" onclick="selectPerson(7)">7</button>
+            <button class="btn-person" onclick="selectPerson(8)">8</button>
+            <button class="btn-person" onclick="selectPerson(9)">9</button>
+            <button class="btn-person" onclick="selectPerson(10)">10+</button>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Special Requests (Optional)</label>
+          <textarea id="bNotes" rows="3" placeholder="Birthday, allergies, high chair..."></textarea>
+        </div>
+        
+        <button class="btn-primary" onclick="nextStep(2)">Continue to Date & Time</button>
+      </div>
+
+      <div id="step2" class="step-section">
+        <h2>Date & Time</h2>
+        <p style="color:var(--text-soft);margin-bottom:2rem;">When will you be joining us?</p>
+        
+        <div class="form-group">
+          <label>Select Date *</label>
+          <input type="date" id="bDate" onchange="fetchAvailability()">
+        </div>
+        
+        <div class="form-group">
+          <label>Select Time *</label>
+          <div id="timeLoader" class="loader-text">Checking availability...</div>
+          <div class="time-grid" id="timeGrid">
+            <div style="grid-column: span 3; color: var(--text-soft); font-size: 0.9rem;">Please select a date first to view available times.</div>
+          </div>
+        </div>
+        
+        <button class="btn-primary" onclick="nextStep(3)">Review Booking</button>
+      </div>
+
+      <div id="step3" class="step-section">
+        <h2>Confirm Booking</h2>
+        <div style="background:var(--cream);padding:2rem;border-radius:12px;margin:2rem 0;">
+          <p><strong>Name:</strong> <span id="confName"></span></p>
+          <p><strong>Phone:</strong> <span id="confPhone"></span></p>
+          <p><strong>Persons:</strong> <span id="confPax"></span></p>
+          <p><strong>Date:</strong> <span id="confDate"></span></p>
+          <p><strong>Time:</strong> <span id="confTime"></span></p>
+        </div>
+        <button class="btn-primary" id="submitBtn" onclick="submitBooking()">Confirm Reservation</button>
+      </div>
+      
+      <div id="step4" class="step-section">
+        <h2>Manage Booking</h2>
+        <p style="color:var(--text-soft);margin-bottom:2rem;">Need to cancel your reservation? Enter your details below to securely verify and cancel your booking.</p>
+        <div class="form-group">
+          <label>Booking ID *</label>
+          <input type="text" id="mBookingId" placeholder="e.g. BK-ABCDEF">
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="mPhone" placeholder="Match the number used to book">
+        </div>
+        <button class="btn-primary" id="cancelBtn" onclick="cancelBooking()" style="background:var(--espresso);">Cancel Booking</button>
+      </div>
+    </div>
+
+    <div class="faq">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-item">
+        <h4>Can I extend my booking?</h4>
+        <p>Bookings are strictly for 1 hour to accommodate all guests. If the café is not full, you are welcome to stay longer. Call +60 12-423 7147 to check.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What if I am late?</h4>
+        <p>We hold tables for 15 minutes past the booking time. If you expect to be later, please call us at +60 12-423 7147.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I modify my booking?</h4>
+        <p>To change the date, time, or number of persons, please call us directly. You can securely cancel your booking anytime using the "Manage Booking" tab above.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // MATCH THIS URL TO YOUR DEPLOYED GOOGLE APPS SCRIPT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwA9GVUDh7cbt1lVogPSB-Uzu86Nl0EZfRSo-ImcdMxriAj-JO5DBArqYm7qTDZ0HQ/exec";
+    
+    let selectedPersons = 1;
+    let selectedTime = "";
+    
+    const ALL_SLOTS = [
+      "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", 
+      "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", 
+      "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM"
+    ];
+
+    function showToast(msg, color="#333") {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.background = color;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    function switchTab(step) {
+      document.querySelectorAll('.tab').forEach((t, i) => {
+        if(i === step-1) t.classList.add('active');
+        else t.classList.remove('active');
+      });
+      document.querySelectorAll('.step-section').forEach((s, i) => {
+        if(i === step-1) s.classList.add('active');
+        else s.classList.remove('active');
+      });
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function selectPerson(num) {
+      selectedPersons = num;
+      document.querySelectorAll('.btn-person').forEach(b => b.classList.remove('selected'));
+      event.target.classList.add('selected');
+    }
+
+    function selectTime(timeStr, btnElement) {
+      selectedTime = timeStr;
+      document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('selected'));
+      btnElement.classList.add('selected');
+    }
+
+    function nextStep(step) {
+      if(step === 2) {
+        if(!document.getElementById('bName').value.trim() || !document.getElementById('bPhone').value.trim()) {
+          showToast("Please fill in your Name and Phone Number.", "#d32f2f");
+          return;
+        }
+      }
+      if(step === 3) {
+        if(!document.getElementById('bDate').value || !selectedTime) {
+          showToast("Please select a Date and an available Time Slot.", "#d32f2f");
+          return;
+        }
+        document.getElementById('confName').textContent = document.getElementById('bName').value;
+        document.getElementById('confPhone').textContent = document.getElementById('bPhone').value;
+        document.getElementById('confPax').textContent = selectedPersons;
+        document.getElementById('confDate').textContent = document.getElementById('bDate').value;
+        document.getElementById('confTime').textContent = selectedTime;
+      }
+      switchTab(step);
+    }
+
+    // Set Minimum Date to Today
+    document.getElementById('bDate').min = new Date().toISOString().split('T')[0];
+    
+    // Fetch Live Availability from Google Sheets
+    async function fetchAvailability() {
+      const dateVal = document.getElementById('bDate').value;
+      if(!dateVal) return;
+      
+      const grid = document.getElementById('timeGrid');
+      const loader = document.getElementById('timeLoader');
+      
+      grid.innerHTML = "";
+      loader.style.display = "block";
+      selectedTime = ""; // Reset time selection
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=availability&date=${dateVal}`);
+        const data = await res.json();
+        
+        loader.style.display = "none";
+        
+        const takenSlots = data.takenSlots || [];
+        
+        ALL_SLOTS.forEach(time => {
+          const isTaken = takenSlots.includes(time);
+          const btn = document.createElement('button');
+          btn.className = "btn-time";
+          btn.textContent = time;
+          if (isTaken) {
+            btn.disabled = true;
+          } else {
+            btn.onclick = () => selectTime(time, btn);
+          }
+          grid.appendChild(btn);
+        });
+
+      } catch (err) {
+        loader.style.display = "none";
+        showToast("Error checking availability. Please try again.", "#d32f2f");
+      }
+    }
+
+    // Submit Booking to Server
+    async function submitBooking() {
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = "Processing Securely...";
+      btn.disabled = true;
+      
+      const payload = {
+        action: "newBooking",
+        name: document.getElementById('bName').value,
+        phone: document.getElementById('bPhone').value,
+        persons: selectedPersons,
+        date: document.getElementById('bDate').value,
+        timeSlot: selectedTime,
+        notes: document.getElementById('bNotes').value
+      };
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        
+        if (data.status === "ok") {
+          document.getElementById('step3').innerHTML = `
+            <div style="text-align:center;padding:3rem 0;">
+              <div style="font-size:4rem;margin-bottom:1rem;">🎉</div>
+              <h2 style="color:var(--terracotta);margin-bottom:1rem;">Table Reserved!</h2>
+              <p>Your Secure Booking ID is <strong style="font-size:1.2rem;color:var(--espresso);">${data.bookingId}</strong>.</p>
+              <p style="color:var(--text-soft);margin-top:1rem;">We'll contact you to confirm shortly. Please arrive 5 minutes early. See you soon!</p>
+            </div>
+          `;
+        } else {
+          throw new Error(data.error);
+        }
+      } catch(e) {
+        showToast("Error securing booking. Please try again.", "#d32f2f");
+        btn.textContent = "Confirm Reservation";
+        btn.disabled = false;
+      }
+    }
+
+    // Cancel Booking via Server
+    async function cancelBooking() {
+      const id = document.getElementById('mBookingId').value.trim();
+      const phone = document.getElementById('mPhone').value.trim();
+      
+      if(!id || !phone) {
+        showToast("Please enter both your Booking ID and Phone Number.", "#d32f2f");
+        return;
+      }
+      
+      const btn = document.getElementById('cancelBtn');
+      btn.textContent = "Verifying & Cancelling...";
+      btn.disabled = true;
+      
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: "cancelCustomerBooking", bookingId: id, phone: phone })
+        });
+        const data = await res.json();
+        
+        if(data.status === "ok") {
+          showToast("Booking Cancelled Successfully.", "#2e7d32");
+          document.getElementById('mBookingId').value = "";
+          document.getElementById('mPhone').value = "";
+        } else {
+          showToast(data.error || "Authentication failed. Invalid ID or Phone.", "#d32f2f");
+        }
+      } catch(e) {
+        showToast("Network Error. Please try again.", "#d32f2f");
+      }
+      
+      btn.textContent = "Cancel Booking";
+      btn.disabled = false;
+    }
+  </script>
+</body>
+</html>
